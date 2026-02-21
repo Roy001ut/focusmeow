@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FocusMeow 设置</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: #faf6f2;
+      color: #333;
+      min-height: 100vh;
+    }
+
+    .top-bar {
+      background: linear-gradient(135deg, #ff9eb5, #ffcc88);
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.1);
+    }
+    .top-bar-icon  { font-size: 36px; }
+    .top-bar h1    { font-size: 22px; font-weight: 700; color: white;
+                     text-shadow: 0 1px 3px rgba(0,0,0,.2); }
+    .top-bar p     { font-size: 13px; color: rgba(255,255,255,.85); margin-top: 2px; }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 32px 24px; }
+
+    /* Tab 导航 */
+    .tabs { display: flex; gap: 4px; margin-bottom: 24px; border-bottom: 2px solid #f0e0d0; }
+    .tab-btn {
+      padding: 9px 20px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      color: #888;
+      cursor: pointer;
+      border-radius: 6px 6px 0 0;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+    .tab-btn:hover { background: #fff0ec; color: #ff6b88; }
+    .tab-btn.active {
+      background: white;
+      color: #ff6b88;
+      border: 2px solid #f0e0d0;
+      border-bottom: 2px solid white;
+      margin-bottom: -2px;
+      font-weight: 600;
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* 卡片 */
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 22px 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.05);
+    }
+    .card h2 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #444;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* URL 规则列表 */
+    .rule-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+    .rule-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: #faf6f2;
+      border-radius: 8px;
+      border: 1px solid #f0e0d0;
+    }
+    .rule-item.whitelist { border-left: 3px solid #4caf50; }
+    .rule-item.blacklist { border-left: 3px solid #f44336; }
+    .rule-pattern {
+      flex: 1;
+      font-size: 13px;
+      font-family: 'Courier New', monospace;
+      color: #555;
+    }
+    .btn-del {
+      padding: 3px 10px;
+      border: 1px solid #ffb0b0;
+      border-radius: 5px;
+      background: white;
+      color: #e05050;
+      font-size: 12px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-del:hover { background: #fff0f0; }
+
+    /* 添加规则输入区 */
+    .add-rule-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .add-rule-row input {
+      flex: 1;
+      min-width: 160px;
+      padding: 8px 12px;
+      border: 1.5px solid #e0d0c8;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: 'Courier New', monospace;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .add-rule-row input:focus { border-color: #ff9eb5; }
+    .add-rule-row select {
+      padding: 8px 12px;
+      border: 1.5px solid #e0d0c8;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      background: white;
+      cursor: pointer;
+      outline: none;
+    }
+    .btn-primary {
+      padding: 8px 18px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #ff9eb5, #ff6b88);
+      color: white;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: opacity 0.15s;
+    }
+    .btn-primary:hover { opacity: 0.9; }
+
+    /* 自定义贴图区域 */
+    .skin-area { display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap; }
+
+    .upload-zone {
+      width: 140px;
+      height: 140px;
+      border: 2.5px dashed #e0c8c0;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: #fdf8f5;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .upload-zone:hover { border-color: #ff9eb5; background: #fff5f7; }
+    .upload-zone span  { font-size: 11px; color: #aaa; margin-top: 6px; text-align: center; line-height: 1.4; }
+    .upload-zone .icon { font-size: 28px; }
+    #upload-input { display: none; }
+    #preview-img  { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; border-radius: 9px; }
+
+    .crop-area {
+      flex: 1;
+      min-width: 220px;
+    }
+    .crop-area h3 { font-size: 14px; color: #666; margin-bottom: 12px; }
+
+    /* Canvas 裁剪预览 */
+    #crop-canvas-container {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #f0e8e0;
+      margin-bottom: 12px;
+    }
+    #crop-canvas { width: 200px; height: 200px; display: block; }
+    /* 圆形遮罩指示 */
+    #crop-canvas-container::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 8px;
+      box-shadow: inset 0 0 0 9999px rgba(240,232,224,.6);
+      -webkit-mask: radial-gradient(circle 88px at center, transparent 87px, black 88px);
+      mask: radial-gradient(circle 88px at center, transparent 87px, black 88px);
+      pointer-events: none;
+    }
+
+    .crop-controls { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn-secondary {
+      padding: 6px 14px;
+      border: 1.5px solid #e0d0c8;
+      border-radius: 7px;
+      background: white;
+      font-size: 12px;
+      color: #666;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+    .btn-secondary:hover { border-color: #ff9eb5; color: #ff6b88; }
+
+    /* 账户预留区 */
+    .account-placeholder {
+      text-align: center;
+      padding: 32px;
+      color: #bbb;
+      font-size: 13px;
+    }
+    .account-placeholder .icon { font-size: 40px; margin-bottom: 10px; }
+
+    /* 保存提示 */
+    #save-toast {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      background: #4caf50;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,.15);
+    }
+    #save-toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="top-bar-icon">🐱</div>
+  <div>
+    <h1>FocusMeow 设置</h1>
+    <p>自定义你的专注喵体验</p>
+  </div>
+</div>
+
+<div class="container">
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="rules">📋 URL 规则</button>
+    <button class="tab-btn" data-tab="skin">🎨 自定义外观</button>
+    <button class="tab-btn" data-tab="account">👤 账户（预留）</button>
+  </div>
+
+  <!-- Tab 1：URL 规则管理 -->
+  <div class="tab-panel active" id="tab-rules">
+    <!-- 白名单 -->
+    <div class="card">
+      <h2>✅ 专注白名单（在这些网站，宠物会鼓励你）</h2>
+      <div class="rule-list" id="whitelist-container">
+        <!-- 动态渲染 -->
+      </div>
+      <div class="add-rule-row">
+        <input type="text" id="input-whitelist" placeholder="例：scholar.google.com 或 *.edu"/>
+        <button class="btn-primary" id="btn-add-white">+ 添加</button>
+      </div>
+    </div>
+
+    <!-- 黑名单 -->
+    <div class="card">
+      <h2>🚫 摸鱼黑名单（在这些网站，宠物会生气）</h2>
+      <div class="rule-list" id="blacklist-container">
+        <!-- 动态渲染 -->
+      </div>
+      <div class="add-rule-row">
+        <input type="text" id="input-blacklist" placeholder="例：*.netflix.com 或 bilibili.com"/>
+        <button class="btn-primary" id="btn-add-black">+ 添加</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 2：自定义外观 -->
+  <div class="tab-panel" id="tab-skin">
+    <div class="card">
+      <h2>🐾 宠物脸部贴图</h2>
+      <p style="font-size:13px;color:#888;margin-bottom:18px;">
+        上传一张头像或图片，将被裁剪为圆形并叠加到猫咪面部区域
+      </p>
+      <div class="skin-area">
+        <!-- 上传区 -->
+        <div class="upload-zone" id="upload-zone">
+          <div class="icon">📷</div>
+          <span>点击上传<br/>JPG / PNG<br/>建议正方形</span>
+          <img id="preview-img" alt="" style="display:none"/>
+          <input type="file" id="upload-input" accept="image/jpeg,image/png,image/webp"/>
+        </div>
+
+        <!-- 裁剪预览 -->
+        <div class="crop-area">
+          <h3>预览 · 圆形裁剪区域</h3>
+          <div id="crop-canvas-container">
+            <canvas id="crop-canvas" width="200" height="200"></canvas>
+          </div>
+          <div class="crop-controls">
+            <button class="btn-secondary" id="btn-zoom-in">🔍 放大</button>
+            <button class="btn-secondary" id="btn-zoom-out">🔍 缩小</button>
+            <button class="btn-primary"   id="btn-apply-skin">应用贴图</button>
+            <button class="btn-secondary" id="btn-clear-skin">移除</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 3：账户（预留） -->
+  <div class="tab-panel" id="tab-account">
+    <div class="card">
+      <div class="account-placeholder">
+        <div class="icon">🔐</div>
+        <p>账户系统正在开发中</p>
+        <p style="margin-top:8px;font-size:12px">
+          未来将支持 Google OAuth 登录，<br/>实现多设备数据同步与宠物成长记录
+        </p>
+        <button class="btn-primary" style="margin-top:20px" disabled>
+          即将推出 · Google 登录
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="save-toast">✓ 设置已保存</div>
+
+<script src="options.js"></script>
+</body>
+</html>

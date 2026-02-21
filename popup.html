@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FocusMeow</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 240px;
+      font-family: system-ui, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: #fffaf6;
+      color: #444;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #ff9eb5, #ffcc88);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .header-icon { font-size: 28px; }
+    .header-title { font-size: 16px; font-weight: 700; color: white;
+                    text-shadow: 0 1px 2px rgba(0,0,0,.2); }
+    .header-sub   { font-size: 11px; color: rgba(255,255,255,.85); margin-top: 1px; }
+
+    .section { padding: 14px 16px; border-bottom: 1px solid #f0e8e0; }
+
+    /* 模式切换 */
+    .mode-label { font-size: 12px; color: #999; margin-bottom: 8px; }
+
+    .mode-toggle {
+      display: flex;
+      background: #f0e8e0;
+      border-radius: 20px;
+      padding: 3px;
+      gap: 3px;
+    }
+    .mode-btn {
+      flex: 1;
+      padding: 7px 0;
+      border: none;
+      border-radius: 17px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: transparent;
+      color: #888;
+    }
+    .mode-btn.active {
+      background: white;
+      color: #ff6b88;
+      box-shadow: 0 2px 6px rgba(0,0,0,.12);
+    }
+    .mode-btn:hover:not(.active) { background: rgba(255,255,255,.5); }
+
+    /* 状态指示 */
+    .status-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .status-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #ccc;
+      transition: background 0.3s;
+    }
+    .status-dot.focused    { background: #4caf50; }
+    .status-dot.distracted { background: #f44336; }
+    .status-dot.idle       { background: #ffcc44; }
+    .status-text { font-size: 12px; color: #888; }
+
+    /* 快捷操作 */
+    .action-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .action-btn {
+      padding: 8px 0;
+      border: 1.5px solid #f0d8c8;
+      border-radius: 8px;
+      background: white;
+      font-size: 12px;
+      color: #666;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: center;
+    }
+    .action-btn:hover {
+      border-color: #ff9eb5;
+      color: #ff6b88;
+      background: #fff5f7;
+    }
+
+    .footer {
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer a {
+      font-size: 11px;
+      color: #aaa;
+      text-decoration: none;
+    }
+    .footer a:hover { color: #ff9eb5; }
+
+    .version { font-size: 10px; color: #ccc; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-icon">🐱</div>
+  <div>
+    <div class="header-title">FocusMeow 专注喵</div>
+    <div class="header-sub">你的专注小伙伴</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="mode-label">当前模式</div>
+  <div class="mode-toggle">
+    <button class="mode-btn" id="btn-leisure">😴 休闲</button>
+    <button class="mode-btn" id="btn-work">🎯 专注</button>
+  </div>
+  <div class="status-row">
+    <div class="status-dot" id="status-dot"></div>
+    <span class="status-text" id="status-text">加载中…</span>
+  </div>
+</div>
+
+<div class="section">
+  <div class="action-grid">
+    <button class="action-btn" id="btn-hide">👻 暂时隐藏</button>
+    <button class="action-btn" id="btn-show">🐱 显示宠物</button>
+    <button class="action-btn" id="btn-options">⚙️ 设置</button>
+    <button class="action-btn" id="btn-pet">🤚 摸摸头</button>
+  </div>
+</div>
+
+<div class="footer">
+  <a href="#" id="link-options">管理 URL 规则</a>
+  <span class="version">v1.0.0</span>
+</div>
+
+<script src="popup.js"></script>
+</body>
+</html>
