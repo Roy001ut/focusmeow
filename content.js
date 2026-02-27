@@ -268,52 +268,65 @@ function initFocusMeow() {
 function getCatSVG() {
   return `
 <svg id="cat-svg" viewBox="0 0 120 160" xmlns="http://www.w3.org/2000/svg"
-     xmlns:xlink="http://www.w3.org/1999/xlink">
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     shape-rendering="crispEdges">
   <defs>
-    <!-- 脸部圆形裁剪区域，用于用户自定义贴图 -->
+    <!-- 脸部裁剪区域，用于用户自定义贴图 -->
     <clipPath id="face-clip">
       <circle cx="60" cy="62" r="24"/>
     </clipPath>
   </defs>
 
-  <!-- ① 尾巴（身体后方，先绘制） -->
+  <!-- ① 尾巴（身体后方，先绘制）— 像素阶梯形 -->
   <g class="part-tail">
-    <path d="M 72 120 Q 110 115 105 95 Q 100 78 85 88 Q 75 95 78 108"
-          fill="none" stroke="#e8c89a" stroke-width="9" stroke-linecap="round"/>
-    <path d="M 72 120 Q 110 115 105 95 Q 100 78 85 88 Q 75 95 78 108"
-          fill="none" stroke="#f9e4c4" stroke-width="5" stroke-linecap="round"/>
+    <rect x="88" y="113" width="10" height="15" fill="#e8c89a"/>
+    <rect x="93" y="103" width="10" height="15" fill="#e8c89a"/>
+    <rect x="98" y="93"  width="10" height="15" fill="#e8c89a"/>
+    <rect x="103" y="83" width="10" height="15" fill="#e8c89a"/>
+    <rect x="100" y="75" width="10" height="13" fill="#e8c89a"/>
+    <rect x="90"  y="72" width="15" height="10" fill="#e8c89a"/>
+    <rect x="83"  y="78" width="12" height="10" fill="#e8c89a"/>
+    <!-- 尾巴内侧高光 -->
+    <rect x="90"  y="116" width="5" height="10" fill="#f5ead6"/>
+    <rect x="95"  y="106" width="5" height="10" fill="#f5ead6"/>
+    <rect x="100" y="96"  width="5" height="10" fill="#f5ead6"/>
   </g>
 
-  <!-- ② 身体 -->
+  <!-- ② 身体 — 像素方块 -->
   <g class="part-body">
-    <ellipse cx="58" cy="112" rx="34" ry="38" fill="#f5ead6"/>
+    <rect x="30" y="88"  width="60" height="10" fill="#f5ead6"/>
+    <rect x="25" y="98"  width="70" height="50" fill="#f5ead6"/>
+    <rect x="30" y="148" width="60" height="5"  fill="#f5ead6"/>
     <!-- 肚子 -->
-    <ellipse cx="57" cy="118" rx="18" ry="22" fill="#fdf6ee"/>
+    <rect x="35" y="103" width="50" height="40" fill="#fdf6ee"/>
   </g>
 
-  <!-- ③ 前爪 -->
+  <!-- ③ 前爪 — 像素块 -->
   <g class="part-paws">
-    <ellipse cx="38" cy="145" rx="13" ry="9" fill="#f5ead6"/>
-    <ellipse cx="76" cy="145" rx="13" ry="9" fill="#f5ead6"/>
+    <rect x="25" y="143" width="25" height="15" fill="#f5ead6"/>
+    <rect x="70" y="143" width="25" height="15" fill="#f5ead6"/>
     <!-- 爪纹 -->
-    <ellipse cx="34" cy="147" rx="3.5" ry="2.5" fill="#e8c89a"/>
-    <ellipse cx="40" cy="149" rx="3.5" ry="2.5" fill="#e8c89a"/>
-    <ellipse cx="72" cy="147" rx="3.5" ry="2.5" fill="#e8c89a"/>
-    <ellipse cx="78" cy="149" rx="3.5" ry="2.5" fill="#e8c89a"/>
+    <rect x="30" y="150" width="5" height="8" fill="#e8c89a"/>
+    <rect x="38" y="152" width="5" height="6" fill="#e8c89a"/>
+    <rect x="75" y="150" width="5" height="8" fill="#e8c89a"/>
+    <rect x="83" y="152" width="5" height="6" fill="#e8c89a"/>
   </g>
 
   <!-- ④ 头部 -->
   <g class="part-head">
-    <!-- 耳朵外 -->
-    <polygon class="ear-left"  points="28,50 35,18 52,44" fill="#f5ead6"/>
-    <polygon class="ear-right" points="92,50 85,18 68,44" fill="#f5ead6"/>
+    <!-- 耳朵外（像素三角，坐标对齐5px网格） -->
+    <polygon class="ear-left"  points="30,50 35,30 50,50" fill="#f5ead6"/>
+    <polygon class="ear-right" points="90,50 85,30 70,50" fill="#f5ead6"/>
     <!-- 耳朵内 -->
-    <polygon points="32,47 38,24 50,42" fill="#f7c5c5"/>
-    <polygon points="88,47 82,24 70,42" fill="#f7c5c5"/>
-    <!-- 脑袋圆 -->
-    <circle cx="60" cy="62" r="34" fill="#f5ead6"/>
+    <polygon points="33,47 38,33 48,47" fill="#f7c5c5"/>
+    <polygon points="87,47 82,33 72,47" fill="#f7c5c5"/>
 
-    <!-- ★ 用户自定义贴图区域（默认透明，有上传时显示） -->
+    <!-- 脑袋（三段式方块，近似八角形轮廓） -->
+    <rect x="35" y="30" width="50" height="5"  fill="#f5ead6"/>
+    <rect x="30" y="35" width="60" height="50" fill="#f5ead6"/>
+    <rect x="35" y="85" width="50" height="5"  fill="#f5ead6"/>
+
+    <!-- ★ 用户自定义贴图区域 -->
     <image id="custom-face-img" href=""
            x="36" y="38" width="48" height="48"
            clip-path="url(#face-clip)"
@@ -321,69 +334,82 @@ function getCatSVG() {
            style="opacity:0.85"/>
 
     <!-- 腮红 -->
-    <ellipse class="blush-left"  cx="38" cy="72" rx="8" ry="5" fill="#ffb0b0" opacity="0.4"/>
-    <ellipse class="blush-right" cx="82" cy="72" rx="8" ry="5" fill="#ffb0b0" opacity="0.4"/>
+    <rect class="blush-left"  x="30" y="68" width="10" height="10" fill="#ffb0b0" opacity="0.45"/>
+    <rect class="blush-right" x="80" y="68" width="10" height="10" fill="#ffb0b0" opacity="0.45"/>
 
     <!-- 眼睛（正常） -->
     <g class="eyes-normal">
-      <ellipse class="eye-l" cx="48" cy="60" rx="6" ry="7" fill="#3a2a1a"/>
-      <ellipse class="eye-r" cx="72" cy="60" rx="6" ry="7" fill="#3a2a1a"/>
-      <!-- 高光 -->
-      <circle cx="51" cy="57" r="2.5" fill="white"/>
-      <circle cx="75" cy="57" r="2.5" fill="white"/>
-      <!-- 眼睑（眨眼用，scaleY 0→1） -->
-      <rect class="blink-l" x="42" y="53" width="12" height="14" rx="6" fill="#f5ead6"/>
-      <rect class="blink-r" x="66" y="53" width="12" height="14" rx="6" fill="#f5ead6"/>
+      <rect class="eye-l" x="43" y="55" width="10" height="10" fill="#3a2a1a"/>
+      <rect x="48" y="55" width="5" height="5" fill="white"/>
+      <rect class="eye-r" x="67" y="55" width="10" height="10" fill="#3a2a1a"/>
+      <rect x="72" y="55" width="5" height="5" fill="white"/>
+      <!-- 眼睑（眨眼用） -->
+      <rect class="blink-l" x="43" y="55" width="10" height="10" fill="#f5ead6"/>
+      <rect class="blink-r" x="67" y="55" width="10" height="10" fill="#f5ead6"/>
     </g>
 
-    <!-- 眼睛（睡觉，弧线） -->
+    <!-- 眼睛（睡觉） -->
     <g class="eyes-sleep" style="display:none">
-      <path d="M 43 62 Q 48 56 53 62" stroke="#3a2a1a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-      <path d="M 67 62 Q 72 56 77 62" stroke="#3a2a1a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <rect x="43" y="62" width="10" height="5" fill="#3a2a1a"/>
+      <rect x="67" y="62" width="10" height="5" fill="#3a2a1a"/>
     </g>
 
-    <!-- 眼睛（生气，斜线） -->
+    <!-- 眼睛（生气） -->
     <g class="eyes-angry" style="display:none">
-      <ellipse cx="48" cy="62" rx="6" ry="5" fill="#3a2a1a"/>
-      <ellipse cx="72" cy="62" rx="6" ry="5" fill="#3a2a1a"/>
-      <!-- 皱眉纹 -->
-      <line x1="43" y1="52" x2="53" y2="57" stroke="#c0392b" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="77" y1="52" x2="67" y2="57" stroke="#c0392b" stroke-width="2.5" stroke-linecap="round"/>
+      <rect x="43" y="57" width="10" height="10" fill="#3a2a1a"/>
+      <rect x="67" y="57" width="10" height="10" fill="#3a2a1a"/>
+      <!-- 像素阶梯眉毛 -->
+      <rect x="43" y="48" width="5" height="5" fill="#c0392b"/>
+      <rect x="48" y="43" width="5" height="5" fill="#c0392b"/>
+      <rect x="72" y="48" width="5" height="5" fill="#c0392b"/>
+      <rect x="67" y="43" width="5" height="5" fill="#c0392b"/>
     </g>
 
-    <!-- 鼻子 -->
-    <polygon class="nose" points="60,68 57,72 63,72" fill="#e88080"/>
+    <!-- 鼻子（倒T形像素块） -->
+    <rect x="58" y="68" width="10" height="5" fill="#e88080"/>
+    <rect x="58" y="73" width="5"  height="5" fill="#e88080"/>
+    <rect x="63" y="73" width="5"  height="5" fill="#e88080"/>
 
-    <!-- 嘴巴（开心↔难过，用 class 切换） -->
-    <path class="mouth-happy" d="M 55 73 Q 60 79 65 73" stroke="#7a5a4a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-    <path class="mouth-sad"   d="M 55 77 Q 60 72 65 77" stroke="#7a5a4a" stroke-width="1.8" fill="none" stroke-linecap="round" style="display:none"/>
+    <!-- 嘴巴（开心：U形阶梯） -->
+    <g class="mouth-happy">
+      <rect x="53" y="73" width="5"  height="5" fill="#7a5a4a"/>
+      <rect x="58" y="78" width="10" height="5" fill="#7a5a4a"/>
+      <rect x="63" y="73" width="5"  height="5" fill="#7a5a4a"/>
+    </g>
 
-    <!-- 胡须 -->
+    <!-- 嘴巴（难过：倒U形） -->
+    <g class="mouth-sad" style="display:none">
+      <rect x="53" y="78" width="5"  height="5" fill="#7a5a4a"/>
+      <rect x="58" y="73" width="10" height="5" fill="#7a5a4a"/>
+      <rect x="63" y="78" width="5"  height="5" fill="#7a5a4a"/>
+    </g>
+
+    <!-- 胡须（像素横条） -->
     <g class="whiskers" opacity="0.7">
-      <line x1="20" y1="68" x2="48" y2="70" stroke="#bbb" stroke-width="1.2"/>
-      <line x1="20" y1="73" x2="48" y2="73" stroke="#bbb" stroke-width="1.2"/>
-      <line x1="72" y1="70" x2="100" y2="68" stroke="#bbb" stroke-width="1.2"/>
-      <line x1="72" y1="73" x2="100" y2="73" stroke="#bbb" stroke-width="1.2"/>
+      <rect x="15" y="68" width="25" height="2" fill="#bbbbbb"/>
+      <rect x="15" y="73" width="25" height="2" fill="#bbbbbb"/>
+      <rect x="80" y="68" width="25" height="2" fill="#bbbbbb"/>
+      <rect x="80" y="73" width="25" height="2" fill="#bbbbbb"/>
     </g>
   </g>
 
   <!-- ⑤ 加油牌（focused 模式可见） -->
   <g class="part-sign" style="display:none">
-    <rect x="68" y="90" width="46" height="28" rx="4" fill="#fff9e6" stroke="#f0c040" stroke-width="2"/>
-    <text x="91" y="107" text-anchor="middle" font-size="10" fill="#d4a010" font-weight="bold"
+    <rect x="70" y="92" width="46" height="28" rx="0" fill="#fff9e6" stroke="#f0c040" stroke-width="2"/>
+    <text x="93" y="109" text-anchor="middle" font-size="10" fill="#d4a010" font-weight="bold"
           font-family="system-ui,sans-serif">加油！★</text>
-    <!-- 牌子柄 -->
-    <line x1="91" y1="118" x2="91" y2="138" stroke="#c8a060" stroke-width="3" stroke-linecap="round"/>
+    <!-- 牌子柄（像素条） -->
+    <rect x="90" y="120" width="5" height="20" fill="#c8a060"/>
   </g>
 
   <!-- ⑥ ZZZ 气泡（sleep 模式） -->
   <g class="part-zzz" style="display:none">
-    <text class="zzz-text" x="88" y="45" font-size="13" fill="#8899cc"
-          font-family="system-ui,sans-serif" font-weight="bold">z</text>
+    <text class="zzz-text" x="88" y="45" font-size="12" fill="#8899cc"
+          font-family="monospace,system-ui" font-weight="bold">z</text>
     <text class="zzz-text zzz-2" x="98" y="32" font-size="16" fill="#8899cc"
-          font-family="system-ui,sans-serif" font-weight="bold">z</text>
+          font-family="monospace,system-ui" font-weight="bold">z</text>
     <text class="zzz-text zzz-3" x="110" y="18" font-size="20" fill="#aabbdd"
-          font-family="system-ui,sans-serif" font-weight="bold">Z</text>
+          font-family="monospace,system-ui" font-weight="bold">Z</text>
   </g>
 </svg>`;
 }
@@ -495,7 +521,11 @@ function getCatCSS() {
    各部件 baseline 动画（idle 状态激活）
 ══════════════════════════════ */
 .part-tail {
-  transform-origin: 72px 120px;
+  transform-origin: 88px 120px;
+}
+
+.part-body {
+  transform-origin: 60px 123px;
 }
 
 /* ── mood-idle ── */
